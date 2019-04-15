@@ -4,6 +4,16 @@ import './App.css';
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      cards: [
+        
+      ]
+    }
+  }
+
   style = {
     cardListContainer: {
       maxWidth: "100vw",
@@ -16,57 +26,34 @@ class App extends Component {
     }
   }
 
-  cards = [
-    {
-      color: '#40407a',
-    },
-    {
-      color: '#706fd3',
-    },
-    {
-      color: '#f7f1e3',
-    },
-    {
-      color: '#34ace0',
-    },
-    {
-      color: '#33d9b2',
-    },
-    {
-      color: '#2c2c54',
-    },
-    {
-      color: '#474787',
-    },
-    {
-      color: '#aaa69d',
-    },
-    {
-      color: '#2c2c54',
-    },
-    {
-      color: '#218c74',
-    },
-    {
-      color: '#84817a',
-    },
-    {
-      color: '#ff5252',
-    },
-    {
-      color: '#cc8e35',
-    },
-    {
-      color: '#ccae62',
-    },
-  ];
+  processAPIColors(apiColors) {
+    return apiColors.map((color) => {
+      return {color: `#${color}`};
+    });
+  }
+
+  componentDidMount() {
+    fetch('http://www.colr.org/json/scheme/random')
+        .then((res) => {
+            return res.json();
+        })
+        .then((json) => {
+            let cards = this.processAPIColors(json.schemes[0].colors)
+
+            this.setState({
+              cards
+            })
+        });
+  }
+
+  
 
   getCards() {
-    let cardArray = this.cards.map((card, index) => <CardComponent color={card.color} key={index+card.color}></CardComponent>);
+    let cardArray = this.state.cards.map((card, index) => <CardComponent color={card.color} key={index+card.color}></CardComponent>);
     let rowArray = [];
 
     while(cardArray.length > 0)
-      rowArray.push(cardArray.splice(0,3))
+      rowArray.push(cardArray.splice(0,3));
 
     return rowArray; 
   }

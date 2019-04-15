@@ -15,7 +15,8 @@ export class CardComponent extends Component {
         marginLeft: "10px",
         
         position: "relative",
-        marginTop: "5px"
+        marginTop: "10px"
+
     }
 
     containerBoxShadowHover = {
